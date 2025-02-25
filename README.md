@@ -15,6 +15,7 @@ Datasettene vi har brukt:
   - Flomsoner
       - https://kartkatalog.geonorge.no/metadata/flomsoner/e95008fc-0945-4d66-8bc9-e50ab3f50401?search=flomsoner
   - OpenStreetMap - leaflet
+      - https://leafletjs.com/download.html
 
 
 Implementasjon: Steg-for-steg forklaring av løsningen

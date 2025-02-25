@@ -7,7 +7,8 @@ Teknologivalg: Begrunnelse for valg av teknologi
 
 Datasettene vi har brukt: 
   - Befolkning på grunnkretsnivå - Kar
-  - Tilfluktsrom – Offentlige - https://kartkatalog.geonorge.no/metadata/tilfluktsrom-offentlige/dbae9aae-10e7-4b75-8d67-7f0e8828f3d8?search=offent
+  - Tilfluktsrom – Offentlige
+      - https://kartkatalog.geonorge.no/metadata/tilfluktsrom-offentlige/dbae9aae-10e7-4b75-8d67-7f0e8828f3d8?search=offent
   - Brannstasjoner - Kartkatalogen 
   - Flomsoner - Kartkatalogen
   - OpenStreetMap - leaflet

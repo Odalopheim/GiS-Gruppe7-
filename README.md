@@ -1,7 +1,8 @@
 # GiS-Gruppe7
 
 Problemstilling: 
-Problemstinlingen vi har valgt er å se på sammmengehngen mellom befolkningstetthet og flomsoner, branstasioner og offentlig tilfluktsrom 
+
+Problemstillingen i denne oppgaven er å undersøke hvordan beredskapen er i Agder. Vi undersøker forholdet mellom flom som en risikifaktor og beredskapen i områder med ulik befolkningstetthet. Målet er å analysere sammenhengen mellom beredskapsinstitusjoner som brannstasjoner og tilfluktsrom, og sette det i en kontekst av hvor mange som bor i de ulike områdene. På denne måten håper vi å indentifisere trender som kan gi innsikt rundt risikohåndtering med visualering av data i kart som metode. 
 
 Teknologivalg: Begrunnelse for valg av teknologi
 

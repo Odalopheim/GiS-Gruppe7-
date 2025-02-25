@@ -1,10 +1,17 @@
 # GiS-Gruppe7
 
-Problemstilling: Kort beskrivelse av hva prosjektet løser
+Problemstilling: 
+Problemstinlingen vi har valgt er å se på sammmengehngen mellom befolkningstetthet og flomsoner, branstasioner og offentlig tilfluktsrom 
 
 Teknologivalg: Begrunnelse for valg av teknologi
 
-Datasett: Kilder og hvordan de er bearbeidet
+Datasettene vi har brukt: 
+  - Befolkning på grunnkretsnivå - Kar
+  - Tilfluktsrom – Offentlige - https://kartkatalog.geonorge.no/metadata/tilfluktsrom-offentlige/dbae9aae-10e7-4b75-8d67-7f0e8828f3d8?search=offent
+  - Brannstasjoner - Kartkatalogen 
+  - Flomsoner - Kartkatalogen
+  - OpenStreetMap - leaflet
+
 
 Implementasjon: Steg-for-steg forklaring av løsningen
 

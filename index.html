@@ -28,6 +28,8 @@
         var befolkningstetthetLayer = L.layerGroup();
         var brannstasjonerLayer = L.layerGroup();
         var tilfluktsromLayer = L.layerGroup();
+        var legevaktLayer = L.layerGroup();
+        var sykehusLayer = L.layerGroup();
         
 
         // Funksjon for egendefinerte markører
@@ -139,12 +141,37 @@
             tilfluktsromLayer.addTo(map);
         })
         .catch(error => console.error('Feil ved henting av Tilfluktsrom:', error));
+
+          // Hent og vis legevakt
+          fetch(API_URL + 'Legevakt?select=*', { headers: HEADERS })
+        .then(response => response.json())
+        .then(data => {
+            const geoJsonData = convertToGeoJSON(data);
+            L.geoJSON(geoJsonData, {
+                pointToLayer: (feature, latlng) => customMarker(feature, latlng, "#0073e6")
+            }).addTo(legevaktLayer);
+            legevaktLayer.addTo(map);
+        })
+        .catch(error => console.error('Feil ved henting av Legevakt:', error));
         
+        // Hent og vis sykehus
+        fetch(API_URL + 'Sykehus?select=*', { headers: HEADERS })
+        .then(response => response.json())
+        .then(data => {
+            const geoJsonData = convertToGeoJSON(data);
+            L.geoJSON(geoJsonData, {
+                pointToLayer: (feature, latlng) => customMarker(feature, latlng, "#800080")
+            }).addTo(sykehusLayer);
+            sykehusLayer.addTo(map);
+        })
+        .catch(error => console.error('Feil ved henting av Sykehus:', error));
         
         // Legg til Layer Control (slå av/på lag)
         var overlayMaps = {
         "<span style='color: red;'>⬤</span> Brannstasjoner": brannstasjonerLayer,
         "<span style='color: #FFD700;'>⬤</span> Tilfluktsrom": tilfluktsromLayer,
+        "<span style='color: #0073e6;'>⬤</span> Legevakt": legevaktLayer,
+        "<span style='color: #800080;'>⬤</span> Sykehus": sykehusLayer,
         "<span style='color: #2171b5;'>⬤</span> Befolkningstetthet": befolkningstetthetLayer
         };
 

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GeoJSON Kart med Supabase</title>
+    
+   <!-- Leaflet CSS -->
+   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+   <link rel="stylesheet" href="styles.css" />
+   <!-- Leaflet JS -->
+   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+   <script src="script.js"></script>
+    
+</head>
+<body>
+
+    <div id="map"></div>
+
+    <script>
+        // Opprett kartet
+        var map = L.map('map').setView([58.5, 7.5], 8);
+
+        // Legg til OpenStreetMap bakgrunn
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+        // Opprett lag for brannstasjoner og tilfluktsrom
+        var befolkningstetthetLayer = L.layerGroup();
+        var brannstasjonerLayer = L.layerGroup();
+        var tilfluktsromLayer = L.layerGroup();
+        
+
+        // Funksjon for egendefinerte markører
+        function customMarker(feature, latlng, color) {
+            return L.circleMarker(latlng, {
+                radius: 6,
+                fillColor: color,
+                color: "#000",
+                weight: 1,
+                opacity: 1,
+                fillOpacity: 0.9
+            });
+        }
+
+        // Funksjon for å konvertere data til GeoJSON
+        function convertToGeoJSON(data) {
+            return {
+                type: "FeatureCollection",
+                features: data.map(item => {
+                    if (item.geom && item.geom.coordinates && item.geom.coordinates.length >= 2) {
+                        return {
+                            type: "Feature",
+                            geometry: {
+                                type: "Point",
+                                coordinates: item.geom.coordinates
+                            },
+                            properties: item
+                        };
+                    }
+                    // Sjekk om geometrien er polygon
+                    if (item.geom && item.geom.coordinates && item.geom.coordinates[0].length > 2) {
+                        return {
+                            type: "Feature",
+                            geometry: {
+                                type: "Polygon", // Dette er for polygongeometri
+                                coordinates: item.geom.coordinates
+                            },
+                            properties: item
+                        };
+                    }
+                    return null;
+                }).filter(item => item !== null)
+            };
+        }
+
+        // Funksjon for å lage fargebasert på befolkningstetthet
+        function getPopulationDensityColor(density) {
+            return density > 1000 ? '#08306b' : // Mørk blå for høy befolkningstetthet
+                   density > 500  ? '#08519c' :
+                   density > 200  ? '#2171b5' :
+                   density > 100  ? '#4292c6' :
+                   density > 50   ? '#6baed6' :
+                   density > 20   ? '#9ecae1' :
+                   density > 10   ? '#c6dbef' :
+                   null;  
+        }
+
+        // API URL og nøkkel (NB: Eksponering av API-nøkkel er ikke sikkert!)
+        const API_URL = "https://cpssxesdotbyqzeuglkg.supabase.co/rest/v1/";
+        const API_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNwc3N4ZXNkb3RieXF6ZXVnbGtnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzkyNzg1NTUsImV4cCI6MjA1NDg1NDU1NX0.NRaOkPRw-a6sdNZLrJqyGbi9z4Uur1Ka76pJKy49wcc";
+        const HEADERS = { 'apikey': API_KEY, 'Authorization': `Bearer ${API_KEY}` };
+
+        // Hente og vise befolkningstetthet 
+        fetch(API_URL + 'Befolkningstetthet?select=totalBefolkning,geom', { headers: HEADERS })
+            .then(response => response.json())
+            .then(data => {
+                console.log("Hentede data:", data);  // Logg dataene for å sjekke om totalBefolkning finnes
+
+                const geoJsonData = convertToGeoJSON(data);
+                L.geoJSON(geoJsonData, {
+                    style: function(feature) {
+                        console.log("Feature properties:", feature.properties);  // Sjekk om totalBefolkning finnes her
+                
+                        return {
+                            color: "#ffffff",  
+                            weight: 1,
+                            fillColor: getPopulationDensityColor(feature.properties.totalBefolkning),  
+                            fillOpacity: 0.6
+                        };
+                    }
+                }).addTo(befolkningstetthetLayer);
+                befolkningstetthetLayer.addTo(map);
+                befolkningstetthetLayer.getLayers().forEach(layer => layer.bringToBack());
+
+            })
+            .catch(error => console.error('Feil ved henting av Befolkningstetthet:', error));
+
+
+        // Hent og vis brannstasjoner
+        fetch(API_URL + 'Brannstasjoner?select=*', { headers: HEADERS })
+        .then(response => response.json())
+        .then(data => {
+            const geoJsonData = convertToGeoJSON(data);
+            L.geoJSON(geoJsonData, {
+                pointToLayer: (feature, latlng) => customMarker(feature, latlng, "red")
+            }).addTo(brannstasjonerLayer);
+            brannstasjonerLayer.addTo(map);
+        })
+        .catch(error => console.error('Feil ved henting av Brannstasjoner:', error));
+
+        // Hent og vis tilfluktsrom
+        fetch(API_URL + 'Tilfluktsrom?select=*', { headers: HEADERS })
+        .then(response => response.json())
+        .then(data => {
+            const geoJsonData = convertToGeoJSON(data);
+            L.geoJSON(geoJsonData, {
+                pointToLayer: (feature, latlng) => customMarker(feature, latlng, "#FFD700")
+            }).addTo(tilfluktsromLayer);
+            tilfluktsromLayer.addTo(map);
+        })
+        .catch(error => console.error('Feil ved henting av Tilfluktsrom:', error));
+        
+        
+        // Legg til Layer Control (slå av/på lag)
+        var overlayMaps = {
+        "<span style='color: red;'>⬤</span> Brannstasjoner": brannstasjonerLayer,
+        "<span style='color: #FFD700;'>⬤</span> Tilfluktsrom": tilfluktsromLayer,
+        "<span style='color: #2171b5;'>⬤</span> Befolkningstetthet": befolkningstetthetLayer
+        };
+
+        L.control.layers(null, overlayMaps, { collapsed: false }).addTo(map);
+
+
+        // Legg til tegnforklaring (legend)
+        var legend = L.control({position: 'bottomright'});
+
+        legend.onAdd = function () {
+            var div = L.DomUtil.create('div', 'legend');
+            div.innerHTML = 
+                '<b>Befolkningstetthet</b><br>' +
+                '<i style="background:#08306b"></i> > 1000<br>' +
+                '<i style="background:#08519c"></i> 500 - 1000<br>' +
+                '<i style="background:#2171b5"></i> 200 - 500<br>' +
+                '<i style="background:#4292c6"></i> 100 - 200<br>' +
+                '<i style="background:#6baed6"></i> 50 - 100<br>' +
+                '<i style="background:#9ecae1"></i> 20 - 50<br>' +
+                '<i style="background:#c6dbef"></i> 10 - 20<br>';
+            return div;
+        };
+        legend.addTo(map);
+
+    </script>
+
+</body>
+</html>

@@ -8,9 +8,12 @@
    <!-- Leaflet CSS -->
    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
    <link rel="stylesheet" href="styles.css" />
+   <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+
    <!-- Leaflet JS -->
    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
    <script src="script.js"></script>
+   <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
     
 </head>
 <body>
@@ -30,6 +33,19 @@
         var tilfluktsromLayer = L.layerGroup();
         var legevaktLayer = L.layerGroup();
         var sykehusLayer = L.layerGroup();
+
+        // Legg til søkefunksjon i kartet
+        L.Control.geocoder({ defaultMarkGeocode: false}).on('markgeocode', function(e) {
+            var bbox = e.geocode.bbox;
+            var poly = L.polygon([
+                bbox.getSouthEast(),
+                bbox.getNorthEast(),
+                bbox.getNorthWest(),
+                bbox.getSouthWest()
+            ]).addTo(map);
+    
+            map.fitBounds(poly.getBounds());
+        }).addTo(map);
         
 
         // Funksjon for egendefinerte markører
@@ -148,7 +164,7 @@
         .then(data => {
             const geoJsonData = convertToGeoJSON(data);
             L.geoJSON(geoJsonData, {
-                pointToLayer: (feature, latlng) => customMarker(feature, latlng, "#0073e6")
+                pointToLayer: (feature, latlng) => customMarker(feature, latlng, "#2DC800")
             }).addTo(legevaktLayer);
             legevaktLayer.addTo(map);
         })
@@ -170,7 +186,7 @@
         var overlayMaps = {
         "<span style='color: red;'>⬤</span> Brannstasjoner": brannstasjonerLayer,
         "<span style='color: #FFD700;'>⬤</span> Tilfluktsrom": tilfluktsromLayer,
-        "<span style='color: #0073e6;'>⬤</span> Legevakt": legevaktLayer,
+        "<span style='color: #2DC800;'>⬤</span> Legevakt": legevaktLayer,
         "<span style='color: #800080;'>⬤</span> Sykehus": sykehusLayer,
         "<span style='color: #2171b5;'>⬤</span> Befolkningstetthet": befolkningstetthetLayer
         };

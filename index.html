@@ -196,6 +196,24 @@
         };
         legend.addTo(map);
 
+        //Pop-up for legevakt og sykehus adresse og navn 
+        function customMarker(feature, latlng, color) {
+             let marker = L.circleMarker(latlng, {
+                radius: 6,
+                fillColor: color,
+                color: "#000",
+                weight: 1,
+                opacity: 1,
+                fillOpacity: 0.9
+            });
+
+            if (feature.properties.navn) {
+                marker.bindPopup(`<b>${feature.properties.navn}</b><br>Adresse: ${feature.properties.adresse || 'Ukjent'}`);
+            }
+
+        return marker;
+        }
+
     </script>
 
 </body>

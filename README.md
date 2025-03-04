@@ -56,5 +56,5 @@ Vi har brukt følgende datasett:
 2. Følg README-instruksjonene for å sette opp løsningen. 
 
 ## **Bilder/Video**
-Her er noen eksempler på visualiseringene fra applikasjonen:
-LEGG TIL BILDER HER!
+Her er noen eksempler på visualiseringene av applikasjonen:
+[gif_av_kart](https://github.com/user-attachments/assets/517444a3-aa46-4c48-b119-370199e66adb)

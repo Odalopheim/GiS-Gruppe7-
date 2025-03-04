@@ -2,7 +2,7 @@
 
 ## Problemstilling 
 
-I denne oppgaven blir det undersøkt hvordan beredskapen er i Agder, med fokus på tilgjengeligheten til beredskapsinstitusjoner som brannstasjoner, tilfluktsrom og sykehus. Vi analyserer forholdet mellom befolkningstettheten og disse institusjonene for å identifisere potensielle sårbare områder. På denne måten håper vi å visualisere og analysere disse datasettene i et interaktivt kart for å gi innsikt i beredskapssituasjonen og mulige forbedringer.  
+I denne oppgaven blir det undersøkt hvordan beredskapen er i Agder, med fokus på tilgjengeligheten til beredskapsinstitusjoner som brannstasjoner, tilfluktsrom, legevakt og sykehus. Vi analyserer forholdet mellom befolkningstettheten og disse institusjonene for å identifisere potensielle sårbare områder. På denne måten håper vi å visualisere og analysere disse datasettene i et interaktivt kart for å gi innsikt i beredskapssituasjonen og mulige forbedringer.  
  
 ## Teknologivalg
 Vi har valgt følgende teknologier for implementere løsningen: 

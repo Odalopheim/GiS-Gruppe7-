@@ -24,9 +24,9 @@ Vi har brukt følgende datasett:
 3. Brannstasjoner
       - https://kartkatalog.geonorge.no/metadata/brannstasjoner/0ccce81d-a72e-46ca-8bd9-57b362376485?search=Branstasione
 4. Sykehus
-      - Selv lagt datasett med informasion hentet fra googel maps
+      - Selvlaget datasett med informasion hentet fra Google maps
 5. Legevakt
-      - Selv lagt datasett med informasion hentet fra googel maps
+      - Selvlaget datasett med informasion hentet fra Google maps
 6. OpenStreetMap - leaflet
       - https://leafletjs.com/download.html
 

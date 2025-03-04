@@ -46,7 +46,7 @@ Vi har brukt følgende datasett:
 ### **Lokal kjøring**
 1. Klon repoet:  
    ```bash
-   git clone <https://github.com/Odalopheim/GiS-Gruppe7-.git>
+   git clone https://github.com/Odalopheim/GiS-Gruppe7-.git
    ```
 2. Installer avhengigheter:  
    Hvis du bruker VS Code, kan du installere Live Server-utvidelsen og klikke "Go Live".

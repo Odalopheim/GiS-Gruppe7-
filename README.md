@@ -57,4 +57,9 @@ Vi har brukt følgende datasett:
 
 ## **Bilder/Video**
 Her er noen eksempler på visualiseringene av applikasjonen:
-[gif_av_kart](https://github.com/user-attachments/assets/517444a3-aa46-4c48-b119-370199e66adb)
+[gif_av_kart](https://github.com/user-atta
+
+https://github.com/user-attachments/assets/47a64c98-2d84-42f4-88ac-0ebde2803d15
+
+chments/assets/517444a3-aa46-4c48-b119-370199e66adb)
+

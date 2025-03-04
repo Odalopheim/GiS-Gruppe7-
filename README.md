@@ -46,13 +46,13 @@ Vi har brukt følgende datasett:
 ### **Lokal kjøring**
 1. Klon repoet:  
    ```bash
-   git clone <repo-url>
+   git clone <https://github.com/Odalopheim/GiS-Gruppe7-.git>
    ```
 2. Installer avhengigheter:  
    Hvis du bruker VS Code, kan du installere Live Server-utvidelsen og klikke "Go Live".
 
 ## Kjøring via GitHub
-1. Gå til GitHub Repo (legg inn riktig lenke)!!!!.
+1. Gå til GitHub Repo (https://github.com/Odalopheim/GiS-Gruppe7-).
 2. Følg README-instruksjonene for å sette opp løsningen. 
 
 ## **Bilder/Video**

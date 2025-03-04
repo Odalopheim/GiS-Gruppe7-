@@ -127,8 +127,8 @@
                         };
                     }
                 }).addTo(befolkningstetthetLayer);
-                befolkningstetthetLayer.addTo(map);
-                befolkningstetthetLayer.getLayers().forEach(layer => layer.bringToBack());
+                map.addLayer(befolkningstetthetLayer);
+                befolkningstetthetLayer.eachLayer(layer => layer.bringToBack());
 
             })
             .catch(error => console.error('Feil ved henting av Befolkningstetthet:', error));
@@ -192,6 +192,13 @@
         };
 
         L.control.layers(null, overlayMaps, { collapsed: false }).addTo(map);
+
+        // Flytt befolkningstetthet til baksiden
+        map.on('overlayadd', function(eventLayer) {
+            if (eventLayer.name === "<span style='color: #2171b5;'>⬤</span> Befolkningstetthet") {
+                befolkningstetthetLayer.eachLayer(layer => layer.bringToBack());
+            }
+        });
 
 
         // Legg til tegnforklaring (legend)

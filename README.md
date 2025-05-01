@@ -59,4 +59,9 @@ Vi har brukt følgende datasett:
 ## **Bilder/Video**
 Her er noen eksempler på visualiseringene av applikasjonen:
 
+![Beredskap GIF](beredskap_i_agder_gif.gif)
+
+[Se beredskapsvideoen her](beredskap_i_agder.mp4)
+
+
 

@@ -28,7 +28,7 @@
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
 
         // Opprett lag for brannstasjoner og tilfluktsrom
-        var befolkningstetthetLayer = L.layerGroup();
+        var befolkning_agderLayer = L.layerGroup();
         var brannstasjonerLayer = L.layerGroup();
         var tilfluktsromLayer = L.layerGroup();
         var legevaktLayer = L.layerGroup();
@@ -60,12 +60,15 @@
             });
         }
 
-        // Funksjon for å konvertere data til GeoJSON
         function convertToGeoJSON(data) {
             return {
                 type: "FeatureCollection",
                 features: data.map(item => {
-                    if (item.geom && item.geom.coordinates && item.geom.coordinates.length >= 2) {
+                    if (!item.geom || !item.geom.coordinates) return null;
+
+                    const type = item.geom.type;
+
+                    if (type === "Point") {
                         return {
                             type: "Feature",
                             geometry: {
@@ -74,22 +77,21 @@
                             },
                             properties: item
                         };
-                    }
-                    // Sjekk om geometrien er polygon
-                    if (item.geom && item.geom.coordinates && item.geom.coordinates[0].length > 2) {
+                    } else if (type === "Polygon" || type === "MultiPolygon") {
                         return {
                             type: "Feature",
                             geometry: {
-                                type: "Polygon", // Dette er for polygongeometri
+                                type: type,
                                 coordinates: item.geom.coordinates
                             },
                             properties: item
-                        };
+                    };
                     }
                     return null;
                 }).filter(item => item !== null)
             };
-        }
+    }
+
 
         // Funksjon for å lage fargebasert på befolkningstetthet
         function getPopulationDensityColor(density) {
@@ -109,7 +111,7 @@
         const HEADERS = { 'apikey': API_KEY, 'Authorization': `Bearer ${API_KEY}` };
 
         // Hente og vise befolkningstetthet 
-        fetch(API_URL + 'Befolkningstetthet?select=totalBefolkning,geom', { headers: HEADERS })
+        fetch(API_URL + 'befolkning_agder?select=totalBefolkning,geom', { headers: HEADERS })
             .then(response => response.json())
             .then(data => {
                 console.log("Hentede data:", data);  // Logg dataene for å sjekke om totalBefolkning finnes
@@ -126,9 +128,9 @@
                             fillOpacity: 0.6
                         };
                     }
-                }).addTo(befolkningstetthetLayer);
-                map.addLayer(befolkningstetthetLayer);
-                befolkningstetthetLayer.eachLayer(layer => layer.bringToBack());
+                }).addTo(befolkning_agderLayer);
+                map.addLayer(befolkning_agderLayer);
+                befolkning_agderLayer.eachLayer(layer => layer.bringToBack());
 
             })
             .catch(error => console.error('Feil ved henting av Befolkningstetthet:', error));
@@ -188,15 +190,15 @@
         "<span style='color: #FFD700;'>⬤</span> Tilfluktsrom": tilfluktsromLayer,
         "<span style='color: #2DC800;'>⬤</span> Legevakt": legevaktLayer,
         "<span style='color: #800080;'>⬤</span> Sykehus": sykehusLayer,
-        "<span style='color: #2171b5;'>⬤</span> Befolkningstetthet": befolkningstetthetLayer
+        "<span style='color: #2171b5;'>⬤</span> befolknings_agder": befolkning_agderLayer
         };
 
         L.control.layers(null, overlayMaps, { collapsed: false }).addTo(map);
 
         // Flytt befolkningstetthet til baksiden
         map.on('overlayadd', function(eventLayer) {
-            if (eventLayer.name === "<span style='color: #2171b5;'>⬤</span> Befolkningstetthet") {
-                befolkningstetthetLayer.eachLayer(layer => layer.bringToBack());
+            if (eventLayer.name === "<span style='color: #2171b5;'>⬤</span> Befolkning_agder") {
+                befolkning_agderLayer.eachLayer(layer => layer.bringToBack());
             }
         });
 
